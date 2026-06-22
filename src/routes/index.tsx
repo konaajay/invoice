@@ -138,6 +138,9 @@ export function AppRoutes() {
       <Route path="/verify/:identifier" element={<PublicVerificationPage />} />
       <Route path="/landing/:slug" element={<LandingPage />} />
       <Route path="/vendor-portal" element={<VendorProtectedRoute element={<VendorPortal />} />} />
+      
+      {/* Standalone Receipt Print View */}
+      <Route path="/vendor/invoices/:id/receipt" element={<ProtectedRoute element={<Receipt />} module="VENDOR" permission="VENDOR_VIEW" />} />
 
       {/* Main App Layout Routes */}
       <Route element={<AppLayout />}>
@@ -227,7 +230,6 @@ export function AppRoutes() {
           <Route path="vendor/assets" element={<ProtectedRoute element={<Procurement />} module="VENDOR" permission="VENDOR_VIEW" />} />
           <Route path="vendor/contracts" element={<ProtectedRoute element={<Contracts />} module="VENDOR" permission="VENDOR_VIEW" />} />
           <Route path="vendor/invoices" element={<ProtectedRoute element={<Invoices />} module="VENDOR" permission="VENDOR_VIEW" />} />
-          <Route path="vendor/invoices/:id/receipt" element={<ProtectedRoute element={<Receipt />} module="VENDOR" permission="VENDOR_VIEW" />} />
           <Route path="vendor/requirements" element={<ProtectedRoute element={<Requirements />} module="VENDOR" permission="VENDOR_VIEW" />} />
           <Route path="vendor/performance" element={<ProtectedRoute element={<Performance />} module="VENDOR" permission="VENDOR_VIEW" />} />
           <Route path="vendor/risk-compliance" element={<ProtectedRoute element={<RiskCompliance />} module="VENDOR" permissions={["VENDOR_VIEW", "VENDOR_MANAGE"]} />} />

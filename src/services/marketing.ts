@@ -111,7 +111,7 @@ export const hardDeleteCoupon = (id: any) =>
     rolesApi.delete(`/marketing/admin/coupons/${id}/hard`).then(res => res.data);
 
 // Leads
-export const captureLead = (data: any) => rolesApi.post('/leads', data).then(res => res.data);
+export const captureLead = (data: any) => rolesApi.post('/api/leads', data).then(res => res.data);
 export const getLeads = () => rolesApi.get('/admin/marketing/campaigns/leads').then(res => res.data);
 
 // Professional Email Campaigns

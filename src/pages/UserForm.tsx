@@ -1683,7 +1683,7 @@ export default function UserForm({ userId, onClose }: UserFormProps = {}) {
                                         value={supervisorUserId}
                                         onChange={(e) => setSupervisorUserId(e.target.value)}
                                     >
-                                        <option value="">No supervisor (reporting endpoint)</option>
+                                        <option value="">No supervisor</option>
                                         {supervisors.map((s) => (
                                             <option key={s.id} value={s.id}>
                                                 {s.name}
