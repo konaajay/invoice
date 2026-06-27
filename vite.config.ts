@@ -14,13 +14,13 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://100.85.146.60:8080',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/lap-api': {
-        target: 'http://100.121.237.45:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/lap-api/, ''),

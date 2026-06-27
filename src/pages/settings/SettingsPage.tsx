@@ -76,6 +76,14 @@ const settingsCards = [
     icon: Blocks,
     color: 'text-primary border-primary/20 bg-primary/5'
   },
+  {
+    id: 'invoice-configurations',
+    label: 'Invoice Configurations',
+    description: 'Create and manage custom invoice templates and billing formats.',
+    path: '/settings/invoice-configurations',
+    icon: FileText,
+    color: 'text-primary border-primary/20 bg-primary/5'
+  },
 ];
 
 export function SettingsPage() {

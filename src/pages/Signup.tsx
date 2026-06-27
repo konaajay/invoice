@@ -11,19 +11,40 @@ export default function Signup() {
   const [adminEmail, setAdminEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const validate = () => {
+    const errors: { [key: string]: string } = {};
+    if (tenantName.length < 3) errors.tenantName = "Company name must be at least 3 characters";
+    if (!adminFirstName) errors.adminFirstName = "First name is required";
+    if (!adminLastName) errors.adminLastName = "Last name is required";
+    if (!/^[a-zA-Z0-9.\-_]+@gmail\.com$/.test(adminEmail)) errors.adminEmail = "Email must be a valid Gmail address";
+    if (!/^\d{10}$/.test(phone)) errors.phone = "Phone number must be exactly 10 digits";
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/.test(adminPassword)) errors.adminPassword = "Password must include one uppercase, one lowercase, one digit, and one special char";
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     setMessage(null);
     setError(null);
     setLoading(true);
 
+    const generatedCode = tenantName.toUpperCase().replace(/[^A-Z0-9_]/g, '').substring(0, 10);
+    const generatedDbName = tenantName.toLowerCase().replace(/[^a-z0-9_]/g, '') + '_db';
+
     const payload = {
       tenantName,
+      tenantCode: generatedCode || 'TENANT1',
+      databaseName: generatedDbName || 'default_db',
       adminFirstName,
       adminLastName,
       adminEmail,
@@ -36,8 +57,24 @@ export default function Signup() {
       setMessage('Company registered successfully! Your 15-Day Trial has started.');
       setTimeout(() => navigate('/login'), 2500);
     } catch (err: unknown) {
-      const axiosError = err as { response?: { data?: { message?: string } } };
-      setError(axiosError.response?.data?.message || 'Registration failed. Please try again.');
+      const axiosError = err as { response?: { data?: any }; message?: string };
+      let errorMsg = 'Registration failed. Please try again.';
+      
+      if (axiosError.response?.data) {
+        if (typeof axiosError.response.data === 'object') {
+           if (axiosError.response.data.errors) {
+              setFormErrors(axiosError.response.data.errors);
+              errorMsg = "Please correct the highlighted errors.";
+           } else if (axiosError.response.data.message) {
+              errorMsg = axiosError.response.data.message;
+           }
+        } else if (typeof axiosError.response.data === 'string') {
+           errorMsg = axiosError.response.data;
+        }
+      } else if (axiosError.message) {
+        errorMsg = axiosError.message;
+      }
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -67,10 +104,11 @@ export default function Signup() {
               type="text"
               required
               placeholder="e.g. Acme Corp"
-              className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+              className={`w-full bg-background border ${formErrors.tenantName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
               value={tenantName}
-              onChange={(e) => setTenantName(e.target.value)}
+              onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({...prev, tenantName: ''})) }}
             />
+            {formErrors.tenantName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.tenantName}</span>}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -80,10 +118,11 @@ export default function Signup() {
                 type="text"
                 required
                 placeholder="John"
-                className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+                className={`w-full bg-background border ${formErrors.adminFirstName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminFirstName}
-                onChange={(e) => setAdminFirstName(e.target.value)}
+                onChange={(e) => { setAdminFirstName(e.target.value); setFormErrors(prev => ({...prev, adminFirstName: ''})) }}
               />
+              {formErrors.adminFirstName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminFirstName}</span>}
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">Last Name</label>
@@ -91,10 +130,11 @@ export default function Signup() {
                 type="text"
                 required
                 placeholder="Doe"
-                className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+                className={`w-full bg-background border ${formErrors.adminLastName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminLastName}
-                onChange={(e) => setAdminLastName(e.target.value)}
+                onChange={(e) => { setAdminLastName(e.target.value); setFormErrors(prev => ({...prev, adminLastName: ''})) }}
               />
+              {formErrors.adminLastName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminLastName}</span>}
             </div>
           </div>
 
@@ -104,22 +144,24 @@ export default function Signup() {
               <input
                 type="email"
                 required
-                placeholder="john@company.com"
-                className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+                placeholder="john@gmail.com"
+                className={`w-full bg-background border ${formErrors.adminEmail ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminEmail}
-                onChange={(e) => setAdminEmail(e.target.value)}
+                onChange={(e) => { setAdminEmail(e.target.value); setFormErrors(prev => ({...prev, adminEmail: ''})) }}
               />
+              {formErrors.adminEmail && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminEmail}</span>}
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">Phone Number</label>
               <input
-                type="text"
+                type="tel"
                 required
-                placeholder="+1 234 567 8900"
-                className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+                placeholder="1234567890"
+                className={`w-full bg-background border ${formErrors.phone ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => { setPhone(e.target.value); setFormErrors(prev => ({...prev, phone: ''})) }}
               />
+              {formErrors.phone && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.phone}</span>}
             </div>
           </div>
 
@@ -129,11 +171,11 @@ export default function Signup() {
               type="password"
               required
               placeholder="••••••••"
-              minLength={6}
-              className="w-full bg-background border border-border text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm"
+              className={`w-full bg-background border ${formErrors.adminPassword ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
               value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              onChange={(e) => { setAdminPassword(e.target.value); setFormErrors(prev => ({...prev, adminPassword: ''})) }}
             />
+            {formErrors.adminPassword && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminPassword}</span>}
           </div>
 
           <button

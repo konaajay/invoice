@@ -30,6 +30,7 @@ const TABS: Record<string, TabItem[]> = {
     { label: 'Doc Templates', path: '/settings/templates', permissions: ['ROLE_VIEW', 'SETTINGS_MANAGE_TEMPLATES'] },
     { label: 'Certificates List', path: '/settings/certificates', permissions: ['ROLE_VIEW', 'SETTINGS_MANAGE_TEMPLATES'] },
     { label: 'System Settings', path: '/settings/system', permissions: ['ROLE_VIEW', 'SETTINGS_MANAGE_SETTINGS'] },
+    { label: 'Invoice Configs', path: '/settings/invoice-configurations', permissions: ['ROLE_VIEW', 'COMPANY_PROFILE_VIEW'] },
   ],
   'hrms': [
     { label: 'Attendance', path: '/attendance', permissions: ['ATTENDANCE_VIEW_ATTENDANCE'] },
@@ -52,10 +53,25 @@ const TABS: Record<string, TabItem[]> = {
 };
 
 function ModuleTabsHeader({ moduleName }: { moduleName: string }) {
-  const { hasAnyPermission } = usePermissions();
-  const items = (TABS[moduleName] ?? []).filter((item) =>
-    item.permissions?.length ? hasAnyPermission(item.permissions) : true
-  );
+  const { hasAnyPermission, isModuleEnabled, isPlatformAdmin } = usePermissions();
+  
+  // Use a heuristic: map the moduleName URL segment to the backend module key
+  // e.g. "crm" -> "CRM", "hrms" -> "HRMS" (with "access-control" -> "ADMIN", "settings" -> "SETTINGS", "vendor" -> "VENDOR")
+  const getBackendModuleName = (name: string) => {
+    if (name === 'access-control') return 'ADMIN';
+    return name.toUpperCase();
+  };
+  
+  const requiredModule = getBackendModuleName(moduleName);
+  
+  if (!isModuleEnabled(requiredModule)) {
+    return null;
+  }
+
+  const items = (TABS[moduleName] ?? []).filter((item) => {
+    if (isPlatformAdmin && item.label === 'Billing & Plans') return false;
+    return item.permissions?.length ? hasAnyPermission(item.permissions) : true;
+  });
   const location = useLocation();
 
   if (!items || items.length === 0) return null;

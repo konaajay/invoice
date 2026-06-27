@@ -161,6 +161,23 @@ export default function UserManager() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      showToast('error', 'First name, last name, and email are required');
+      return;
+    }
+    if (!/^[a-zA-Z0-9.\-_]+@gmail\.com$/.test(email)) {
+      showToast('error', 'Email must be a valid Gmail address');
+      return;
+    }
+    if (!editingId && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/.test(password)) {
+      showToast('error', 'Password must include one uppercase, one lowercase, one digit, and one special char');
+      return;
+    }
+    if (!/^\d{10}$/.test(phoneNumber)) {
+      showToast('error', 'Phone number must be exactly 10 digits');
+      return;
+    }
+
     const payload = {
       firstName,
       lastName,
@@ -217,11 +234,15 @@ export default function UserManager() {
 
       fetchUsers();
     } catch (err: unknown) {
-      const axiosError = err as { response?: { data?: { message?: string } | string }; message?: string };
+      const axiosError = err as { response?: { data?: any }; message?: string };
       let errorMsg = 'Save failed.';
       if (axiosError.response) {
-        if (typeof axiosError.response.data === 'object' && axiosError.response.data?.message) {
-          errorMsg = axiosError.response.data.message;
+        if (typeof axiosError.response.data === 'object') {
+          if (axiosError.response.data.errors) {
+            errorMsg = Object.values(axiosError.response.data.errors).join(' | ');
+          } else if (axiosError.response.data.message) {
+            errorMsg = axiosError.response.data.message;
+          }
         } else if (typeof axiosError.response.data === 'string') {
           errorMsg = axiosError.response.data;
         }

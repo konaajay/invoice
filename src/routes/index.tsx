@@ -99,6 +99,8 @@ import {
   DesignationList, DesignationForm,
   WorkModeList, WorkModeForm
 } from "@/pages/settings/LookupPages";
+import InvoiceConfigurationList from "@/pages/settings/InvoiceConfigurationList";
+import InvoiceConfigurationForm from "@/pages/settings/InvoiceConfigurationForm";
 
 
 function VendorProtectedRoute({ element }: { element: React.ReactElement }) {
@@ -196,6 +198,9 @@ export function AppRoutes() {
           <Route path="settings/onboarding-rules" element={<ProtectedRoute element={<OnboardingRulesPage />} permission="COMPANY_PROFILE_VIEW" />} />
           <Route path="settings/dynamic-role-fields" element={<ProtectedRoute element={<DynamicRoleFieldsPage />} permission="COMPANY_PROFILE_VIEW" />} />
           <Route path="settings/system" element={<ProtectedRoute element={<SystemSettingsPage />} permission="COMPANY_PROFILE_VIEW" />} />
+          <Route path="settings/invoice-configurations" element={<ProtectedRoute element={<InvoiceConfigurationList />} permission="COMPANY_PROFILE_VIEW" />} />
+          <Route path="settings/invoice-configurations/create" element={<ProtectedRoute element={<InvoiceConfigurationForm />} permission="COMPANY_PROFILE_VIEW" />} />
+          <Route path="settings/invoice-configurations/edit/:id" element={<ProtectedRoute element={<InvoiceConfigurationForm />} permission="COMPANY_PROFILE_VIEW" />} />
           <Route path="leads/form-builder" element={<ProtectedRoute element={<FormBuilder />} module="crm" permissions={["LEADS_MANAGE_LEAD_FORMS", "LEADS_MANAGE_LEAD_FORMS", "LEADS_MANAGE_LEAD_FORMS"]} />} />
           <Route path="leads/options" element={<ProtectedRoute element={<LeadOptions />} module="crm" permissions={["LEADS_MANAGE_LEAD_FORMS", "LEADS_MANAGE_LEAD_FORMS", "LEADS_MANAGE_LEAD_FORMS"]} />} />
           <Route path="crm/stages" element={<ProtectedRoute element={<LeadStageList />} module="crm" permissions={["LEADS_VIEW_LEADS", "LEADS_MANAGE_LEAD_FORMS"]} />} />
