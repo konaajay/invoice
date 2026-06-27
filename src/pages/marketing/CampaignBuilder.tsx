@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 interface CampaignBuilderProps {
   onSave: (payload: {
     campaignName: string;
-    title?: string;
     subject: string;
     content: string;
     status: string;
@@ -41,10 +40,9 @@ export default function CampaignBuilder({ onSave, onCancel }: CampaignBuilderPro
 
     onSave({
       campaignName: formData.campaignName,
-      title: formData.campaignName,
       subject: formData.subject,
       content: formData.content,
-      status: formData.status === 'ACTIVE' ? 'PENDING' : formData.status,
+      status: formData.status,
       recipients: manualRecipients
     });
   };

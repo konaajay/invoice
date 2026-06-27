@@ -63,7 +63,7 @@ export function Sidebar() {
   // Debug visibility
   const settingsItem = menuConfig.flatMap(s => s.items).find(i => i.id === 'settings');
   const integrationsItem = menuConfig.flatMap(s => s.items).find(i => i.id === 'integrations');
-  
+
   if (settingsItem && canShowItem(settingsItem)) {
     const matchedPerms = settingsItem.permissions?.filter(p => permission.can(p)) || [];
     console.log("Settings is visible due to permissions:", matchedPerms);

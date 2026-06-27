@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/auth/usePermissions';
 import { supportTicketsService, Ticket, TicketType, TicketSummary } from '@/services/supportTickets';
+import CreateTicket from './CreateTicket';
 import toast from 'react-hot-toast';
 
 const priorities = ['low', 'medium', 'high', 'urgent'] as const;
@@ -183,18 +184,20 @@ export function TicketsPage() {
       toast.error('Name and code are required');
       return;
     }
-    try {
-      setSavingType(true);
-      await supportTicketsService.createType(typeForm);
-      toast.success('Issue type added successfully');
-      setTypeForm({ name: '', code: '', description: '' });
-      await loadData(true);
-    } catch (err: unknown) {
-      const axiosError = err as { response?: { data?: { detail?: string } } };
-      toast.error(axiosError.response?.data?.detail || 'Could not add issue type');
-    } finally {
-      setSavingType(false);
-    }
+      try {
+        setSavingType(true);
+        await supportTicketsService.createType(typeForm);
+        toast.success('Issue type added successfully');
+        setTypeForm({ name: '', code: '', description: '' });
+        // Refresh the issue types list immediately
+        const typeRes = await supportTicketsService.getTypes();
+        setTypes(typeRes.data || []);
+      } catch (err: unknown) {
+        const axiosError = err as { response?: { data?: { detail?: string } } };
+        toast.error(axiosError.response?.data?.detail || 'Could not add issue type');
+      } finally {
+        setSavingType(false);
+      }
   };
 
   const handleUpdateTicket = async () => {
@@ -301,78 +304,7 @@ export function TicketsPage() {
                 <CardTitle className="text-base">File a New Support Ticket</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleRaiseTicket} className="space-y-4 text-xs">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="font-semibold text-muted-foreground">Issue Type *</label>
-                      <select
-                        value={form.issue_type}
-                        onChange={(e) => setForm((prev) => ({ ...prev, issue_type: e.target.value }))}
-                        className="w-full bg-background border border-input text-foreground rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary text-xs"
-                        disabled={submitting}
-                        required
-                      >
-                        <option value="">Select issue category</option>
-                        {types.map((type) => (
-                          <option key={type.id} value={type.id}>
-                            {type.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="font-semibold text-muted-foreground">Priority</label>
-                      <select
-                        value={form.priority}
-                        onChange={(e) => setForm((prev) => ({ ...prev, priority: e.target.value }))}
-                        className="w-full bg-background border border-input text-foreground rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary text-xs"
-                        disabled={submitting}
-                      >
-                        {priorities.map((p) => (
-                          <option key={p} value={p}>
-                            {formatLabel(p)}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="font-semibold text-muted-foreground">Subject *</label>
-                    <Input
-                      value={form.subject}
-                      onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
-                      placeholder="Brief summary of the problem"
-                      disabled={submitting}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="font-semibold text-muted-foreground">Description *</label>
-                    <textarea
-                      value={form.description}
-                      onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-                      rows={5}
-                      className="w-full bg-background border border-input text-foreground rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary text-xs"
-                      placeholder="Provide full details of the issue so we can investigate..."
-                      disabled={submitting}
-                      required
-                    />
-                  </div>
-
-                  <Button type="submit" disabled={submitting} className="w-full">
-                    {submitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                        Submitting Ticket...
-                      </>
-                    ) : (
-                      'Submit Ticket'
-                    )}
-                  </Button>
-                </form>
+                <CreateTicket onSuccess={async () => { setTab('my'); await loadData(true); }} />
               </CardContent>
             </Card>
           )}
@@ -444,7 +376,7 @@ export function TicketsPage() {
                       className="w-full bg-background border border-input text-foreground rounded-lg px-3 py-1.5 focus:outline-none text-xs"
                     >
                       <option value="">All Issue Categories</option>
-                      {types.map((type) => (
+                      {(Array.isArray(types) ? types : []).map((type) => (
                         <option key={type.id} value={type.id}>
                           {type.name}
                         </option>
@@ -752,7 +684,7 @@ export function TicketsPage() {
                     </p>
                   ) : (
                     <div className="grid gap-3 max-h-[500px] overflow-y-auto pr-1">
-                      {types.map((type) => (
+                      {(Array.isArray(types) ? types : []).map((type) => (
                         <div
                           key={type.id}
                           className="border p-4 rounded-xl flex items-start justify-between gap-4 bg-muted/20"

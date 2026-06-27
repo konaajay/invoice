@@ -115,11 +115,10 @@ export default function TenantsList() {
       {/* Toast Alert */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${
-            toast.type === 'success'
+          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${toast.type === 'success'
               ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
               : 'bg-rose-500/10 border-rose-500/20 text-rose-455'
-          }`}
+            }`}
           role="alert"
         >
           {toast.msg}
@@ -163,9 +162,8 @@ export default function TenantsList() {
               {filtered.map((tenant) => (
                 <tr
                   key={tenant.id}
-                  className={`border-b border-border text-foreground hover:bg-muted/30 transition-colors ${
-                    !tenant.active ? 'opacity-60' : ''
-                  }`}
+                  className={`border-b border-border text-foreground hover:bg-muted/30 transition-colors ${!tenant.active ? 'opacity-60' : ''
+                    }`}
                 >
                   <td className="py-3.5 px-4 font-mono text-xs">
                     <span className="bg-muted px-2 py-0.5 rounded border border-border text-foreground">
@@ -179,11 +177,10 @@ export default function TenantsList() {
                   <td className="py-3.5 px-4 text-muted-foreground">{tenant.adminEmail || <span className="text-muted-foreground/60">—</span>}</td>
                   <td className="py-3.5 px-4">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold border ${
-                        tenant.active
+                      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold border ${tenant.active
                           ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                           : 'bg-rose-500/10 text-rose-600 dark:text-rose-455 border-rose-500/20'
-                      }`}
+                        }`}
                     >
                       {tenant.active ? 'Active' : 'Disabled'}
                     </span>
@@ -246,11 +243,10 @@ export default function TenantsList() {
                         {hasPermission('TENANT_UPDATE') && (
                           <button
                             type="button"
-                            className={`inline-flex items-center gap-1 font-semibold text-xs transition-colors ${
-                              tenant.active
+                            className={`inline-flex items-center gap-1 font-semibold text-xs transition-colors ${tenant.active
                                 ? 'text-rose-600 dark:text-rose-455 hover:opacity-85'
                                 : 'text-emerald-600 dark:text-emerald-500 hover:opacity-85'
-                            }`}
+                              }`}
                             onClick={() => handleToggleStatus(tenant)}
                           >
                             {tenant.active ? (
@@ -322,5 +318,4 @@ export default function TenantsList() {
     </div>
   );
 }
-
 

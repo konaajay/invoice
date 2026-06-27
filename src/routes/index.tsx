@@ -8,6 +8,7 @@ import GoogleSuccessPage from "@/pages/google/GoogleSuccessPage";
 import GoogleErrorPage from "@/pages/google/GoogleErrorPage";
 import ZoomSuccessPage from "@/pages/zoom/ZoomSuccessPage";
 import { MessagesPage } from "@/pages/messages/MessagesPage";
+import NotificationsPage from "@/pages/NotificationsPage";
 import { TicketsPage } from "@/pages/tickets/TicketsPage";
 import { MarketingPage } from "@/pages/marketing/MarketingPage";
 import { AttendancePage } from "@/pages/hrms/AttendancePage";
@@ -79,6 +80,7 @@ import CreatePermission from "@/pages/CreatePermission";
 import ProtectedRoute from "@/auth/ProtectedRoute";
 
 // Settings module pages
+import UserProfilePage from "@/pages/settings/UserProfilePage";
 import CompanyProfilePage from "@/pages/settings/CompanyProfilePage";
 import IdGenerationSettings from "@/pages/settings/IdGenerationSettings";
 import TemplatesPage from "@/pages/settings/TemplatesPage";
@@ -140,7 +142,7 @@ export function AppRoutes() {
       <Route path="/verify/:identifier" element={<PublicVerificationPage />} />
       <Route path="/landing/:slug" element={<LandingPage />} />
       <Route path="/vendor-portal" element={<VendorProtectedRoute element={<VendorPortal />} />} />
-      
+
       {/* Standalone Receipt Print View */}
       <Route path="/vendor/invoices/:id/receipt" element={<ProtectedRoute element={<Receipt />} module="VENDOR" permission="VENDOR_VIEW" />} />
 
@@ -172,6 +174,7 @@ export function AppRoutes() {
         {/* Settings Module Routes (Wrapped in SettingsLayout) */}
         <Route element={<SettingsLayout />}>
           <Route path="settings" element={<ProtectedRoute element={<SettingsPage />} permissions={["COMPANY_PROFILE_VIEW", "COMPANY_PROFILE_VIEW", "COMPANY_PROFILE_VIEW"]} />} />
+          <Route path="settings/profile" element={<ProtectedRoute element={<UserProfilePage />} />} />
           <Route path="settings/crm" element={<ProtectedRoute element={<CrmSettingsPage />} permissions={["LEADS_MANAGE_LEAD_FORMS", "COMPANY_PROFILE_VIEW"]} />} />
           <Route path="settings/company" element={<ProtectedRoute element={<CompanyProfilePage />} permissions={["COMPANY_PROFILE_VIEW", "COMPANY_PROFILE_VIEW", "COMPANY_PROFILE_VIEW"]} />} />
           <Route path="settings/billing" element={<ProtectedRoute element={<BillingPage />} permission="COMPANY_PROFILE_VIEW" />} />
@@ -247,6 +250,7 @@ export function AppRoutes() {
         <Route path="google/success" element={<ProtectedRoute element={<GoogleSuccessPage />} permissions={["SETTINGS_MANAGE_SETTINGS", "COMPANY_PROFILE_VIEW"]} />} />
         <Route path="google/error" element={<ProtectedRoute element={<GoogleErrorPage />} permissions={["SETTINGS_MANAGE_SETTINGS", "COMPANY_PROFILE_VIEW"]} />} />
         <Route path="zoom/success" element={<ProtectedRoute element={<ZoomSuccessPage />} permissions={["SETTINGS_MANAGE_SETTINGS", "COMPANY_PROFILE_VIEW"]} />} />
+        <Route path="notifications" element={<ProtectedRoute element={<NotificationsPage />} />} />
         <Route path="messages" element={<ProtectedRoute element={<MessagesPage />} permission="MESSAGE_VIEW" />} />
         <Route path="tickets" element={<ProtectedRoute element={<TicketsPage />} permissions={["SUPPORT_TICKETS_RAISE_SUPPORT_TICKET", "SUPPORT_TICKETS_VIEW_SUPPORT_TICKETS", "SUPPORT_TICKETS_MANAGE_SUPPORT_TICKETS", "manage_support_ticket_types", "SUPPORT_TICKETS_VIEW_SUPPORT_TICKETS"]} />} />
         <Route path="affiliate" element={<ProtectedRoute element={<AffiliateShell />} module="AFFILIATE" permissions={["AFFILIATE_VIEW_AFFILIATE", "AFFILIATE_MANAGE_AFFILIATE"]} />} />
@@ -295,6 +299,5 @@ export function AppRoutes() {
     </Routes>
   );
 }
-
 
 

@@ -18,14 +18,14 @@ export function usePermissions() {
   const isSuperAdmin = hasFullAccess; // retain naming for downstream logic
 
   const isPlatformAdminFlag = Boolean(user?.isPlatformAdmin);
-  
+
   const can = useCallback((perm: string) => {
     if (perm.startsWith('TENANT_')) {
       return isPlatformAdminFlag || checkPermission(permissions, perm);
     }
     return isSuperAdmin || checkPermission(permissions, perm);
   }, [isSuperAdmin, isPlatformAdminFlag, permissions]);
-  
+
   const canAny = useCallback((perms: string[]) => {
     if (perms.some(p => p.startsWith('TENANT_'))) {
       return isPlatformAdminFlag || hasAnyPermission(permissions, perms);
@@ -67,5 +67,4 @@ export function usePermissions() {
     canManage,
   };
 }
-
 

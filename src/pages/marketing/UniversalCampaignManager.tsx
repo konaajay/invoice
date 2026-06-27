@@ -50,7 +50,6 @@ export default function UniversalCampaignManager() {
 
   const handleSaveCampaign = async (payload: {
     campaignName: string;
-    title?: string;
     subject: string;
     content: string;
     status: string;

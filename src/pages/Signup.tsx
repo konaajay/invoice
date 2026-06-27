@@ -4,7 +4,7 @@ import rolesApi from '@/services/rolesApi';
 
 export default function Signup() {
   const navigate = useNavigate();
-  
+
   const [tenantName, setTenantName] = useState('');
   const [adminFirstName, setAdminFirstName] = useState('');
   const [adminLastName, setAdminLastName] = useState('');
@@ -12,7 +12,7 @@ export default function Signup() {
   const [phone, setPhone] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function Signup() {
     if (!/^[a-zA-Z0-9.\-_]+@gmail\.com$/.test(adminEmail)) errors.adminEmail = "Email must be a valid Gmail address";
     if (!/^\d{10}$/.test(phone)) errors.phone = "Phone number must be exactly 10 digits";
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/.test(adminPassword)) errors.adminPassword = "Password must include one uppercase, one lowercase, one digit, and one special char";
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -33,7 +33,7 @@ export default function Signup() {
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setMessage(null);
     setError(null);
     setLoading(true);
@@ -59,17 +59,17 @@ export default function Signup() {
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: any }; message?: string };
       let errorMsg = 'Registration failed. Please try again.';
-      
+
       if (axiosError.response?.data) {
         if (typeof axiosError.response.data === 'object') {
-           if (axiosError.response.data.errors) {
-              setFormErrors(axiosError.response.data.errors);
-              errorMsg = "Please correct the highlighted errors.";
-           } else if (axiosError.response.data.message) {
-              errorMsg = axiosError.response.data.message;
-           }
+          if (axiosError.response.data.errors) {
+            setFormErrors(axiosError.response.data.errors);
+            errorMsg = "Please correct the highlighted errors.";
+          } else if (axiosError.response.data.message) {
+            errorMsg = axiosError.response.data.message;
+          }
         } else if (typeof axiosError.response.data === 'string') {
-           errorMsg = axiosError.response.data;
+          errorMsg = axiosError.response.data;
         }
       } else if (axiosError.message) {
         errorMsg = axiosError.message;
@@ -106,7 +106,7 @@ export default function Signup() {
               placeholder="e.g. Acme Corp"
               className={`w-full bg-background border ${formErrors.tenantName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
               value={tenantName}
-              onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({...prev, tenantName: ''})) }}
+              onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({ ...prev, tenantName: '' })) }}
             />
             {formErrors.tenantName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.tenantName}</span>}
           </div>
@@ -120,7 +120,7 @@ export default function Signup() {
                 placeholder="John"
                 className={`w-full bg-background border ${formErrors.adminFirstName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminFirstName}
-                onChange={(e) => { setAdminFirstName(e.target.value); setFormErrors(prev => ({...prev, adminFirstName: ''})) }}
+                onChange={(e) => { setAdminFirstName(e.target.value); setFormErrors(prev => ({ ...prev, adminFirstName: '' })) }}
               />
               {formErrors.adminFirstName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminFirstName}</span>}
             </div>
@@ -132,7 +132,7 @@ export default function Signup() {
                 placeholder="Doe"
                 className={`w-full bg-background border ${formErrors.adminLastName ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminLastName}
-                onChange={(e) => { setAdminLastName(e.target.value); setFormErrors(prev => ({...prev, adminLastName: ''})) }}
+                onChange={(e) => { setAdminLastName(e.target.value); setFormErrors(prev => ({ ...prev, adminLastName: '' })) }}
               />
               {formErrors.adminLastName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminLastName}</span>}
             </div>
@@ -147,7 +147,7 @@ export default function Signup() {
                 placeholder="john@gmail.com"
                 className={`w-full bg-background border ${formErrors.adminEmail ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={adminEmail}
-                onChange={(e) => { setAdminEmail(e.target.value); setFormErrors(prev => ({...prev, adminEmail: ''})) }}
+                onChange={(e) => { setAdminEmail(e.target.value); setFormErrors(prev => ({ ...prev, adminEmail: '' })) }}
               />
               {formErrors.adminEmail && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminEmail}</span>}
             </div>
@@ -159,7 +159,7 @@ export default function Signup() {
                 placeholder="1234567890"
                 className={`w-full bg-background border ${formErrors.phone ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
                 value={phone}
-                onChange={(e) => { setPhone(e.target.value); setFormErrors(prev => ({...prev, phone: ''})) }}
+                onChange={(e) => { setPhone(e.target.value); setFormErrors(prev => ({ ...prev, phone: '' })) }}
               />
               {formErrors.phone && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.phone}</span>}
             </div>
@@ -173,7 +173,7 @@ export default function Signup() {
               placeholder="••••••••"
               className={`w-full bg-background border ${formErrors.adminPassword ? 'border-rose-500' : 'border-border'} text-foreground rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-muted-foreground text-sm`}
               value={adminPassword}
-              onChange={(e) => { setAdminPassword(e.target.value); setFormErrors(prev => ({...prev, adminPassword: ''})) }}
+              onChange={(e) => { setAdminPassword(e.target.value); setFormErrors(prev => ({ ...prev, adminPassword: '' })) }}
             />
             {formErrors.adminPassword && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.adminPassword}</span>}
           </div>
@@ -196,5 +196,4 @@ export default function Signup() {
     </div>
   );
 }
-
 

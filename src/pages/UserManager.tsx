@@ -345,11 +345,10 @@ export default function UserManager() {
       {/* Toast Alert */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${
-            toast.type === 'success'
+          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${toast.type === 'success'
               ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-450'
               : 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-450'
-          }`}
+            }`}
           role="alert"
         >
           {toast.msg}
@@ -401,9 +400,8 @@ export default function UserManager() {
                   filteredUsers.map((user) => (
                     <tr
                       key={user.id}
-                      className={`border-b border-border text-foreground hover:bg-muted/30 transition-colors ${
-                        !user.active ? 'opacity-50' : ''
-                      }`}
+                      className={`border-b border-border text-foreground hover:bg-muted/30 transition-colors ${!user.active ? 'opacity-50' : ''
+                        }`}
                     >
                       <td className="py-3.5 px-4 font-mono text-[11px] text-muted-foreground">
                         {user.leadId || user.employeeId || `USR-${user.id}`}
@@ -433,11 +431,10 @@ export default function UserManager() {
                       <td className="py-3.5 px-4">
                         {user.profileData?.work_mode ? (
                           <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                              user.profileData.work_mode === 'work_from_home'
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold border ${user.profileData.work_mode === 'work_from_home'
                                 ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20'
                                 : 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
-                            }`}
+                              }`}
                           >
                             {user.profileData.work_mode === 'work_from_home' ? 'WFH' : 'Office'}
                           </span>
@@ -841,5 +838,4 @@ export default function UserManager() {
     </div>
   );
 }
-
 

@@ -120,7 +120,7 @@ export default function TenantDetails({ tenantId, onClose }: TenantDetailsProps 
           <ArrowLeft className="w-4 h-4" /> Back to Tenants
         </button>
       )}
-      
+
       <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-full blur-2xl" />
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
@@ -132,11 +132,10 @@ export default function TenantDetails({ tenantId, onClose }: TenantDetailsProps 
               <div className="flex items-center gap-3">
                 <h1 className="text-xl font-bold text-gray-900 tracking-tight">{tenant.name}</h1>
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold border ${
-                    tenant.active
+                  className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold border ${tenant.active
                       ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
                       : 'bg-red-50 text-red-600 border-red-200'
-                  }`}
+                    }`}
                 >
                   {tenant.active ? 'Active' : 'Disabled'}
                 </span>
@@ -217,11 +216,10 @@ export default function TenantDetails({ tenantId, onClose }: TenantDetailsProps 
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center border ${
-                          m.active
+                        className={`w-6 h-6 rounded-full flex items-center justify-center border ${m.active
                             ? 'bg-emerald-100 text-emerald-600 border-emerald-200'
                             : 'bg-gray-200 text-gray-500 border-gray-300'
-                        }`}
+                          }`}
                       >
                         {m.active ? <Play className="w-3 h-3 fill-emerald-500" /> : <X className="w-3.5 h-3.5" />}
                       </div>
@@ -296,14 +294,14 @@ export default function TenantDetails({ tenantId, onClose }: TenantDetailsProps 
           <h3 className="text-sm font-bold text-cyan-600 uppercase tracking-wider flex items-center gap-2">
             <Landmark className="w-4 h-4" /> Invoice & Billing History
           </h3>
-          <button 
+          <button
             onClick={() => setRenewModalOpen(true)}
             className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg uppercase transition-colors shadow-sm"
           >
             Renew Subscription
           </button>
         </div>
-        
+
         <InvoiceHistory tenantId={Number(activeId)} tenant={tenant} />
       </div>
 
@@ -402,7 +400,7 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
         <tbody className="divide-y divide-gray-100">
           {invoices.map((inv) => (
             <React.Fragment key={inv.id}>
-              <tr 
+              <tr
                 onClick={() => toggleExpand(inv.id)}
                 className="hover:bg-gray-50 transition-colors cursor-pointer"
               >
@@ -420,9 +418,8 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                 <td className="px-4 py-4 text-right font-bold text-gray-900">₹{inv.totalAmount}</td>
                 <td className="px-4 py-4 text-right font-bold text-red-600">₹{inv.pendingAmount}</td>
                 <td className="px-4 py-4 text-center">
-                  <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${
-                    inv.status === 'Paid' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
-                  }`}>
+                  <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${inv.status === 'Paid' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
+                    }`}>
                     {inv.status}
                   </span>
                 </td>
@@ -434,7 +431,7 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                       try {
                         const res = await rolesApi.get(`/tenants/${tenantId}/invoices/${inv.id}/items`);
                         setInvoiceItems(res.data);
-                      } catch(err) {
+                      } catch (err) {
                         console.error("Failed to fetch items", err);
                       }
                     }}
@@ -468,7 +465,7 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                                 {inst.paid ? (
                                   <span className="px-3 py-1 rounded-md text-xs font-bold uppercase bg-emerald-50 text-emerald-600 border border-emerald-100 w-full text-center">Paid Successfully</span>
                                 ) : (
-                                  <button 
+                                  <button
                                     onClick={() => handlePayInstallment(inv.id, inst.id)}
                                     className="px-4 py-1.5 rounded-md text-xs font-bold uppercase bg-gray-900 hover:bg-gray-800 text-white transition-colors w-full"
                                   >
@@ -501,7 +498,7 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="p-10 overflow-y-auto flex-1 font-sans relative bg-white" id="tenant-invoice-print">
               {/* WATERMARK */}
               {viewInvoice.status === 'Paid' && (
@@ -528,9 +525,8 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                       <span className="font-bold text-gray-500 uppercase mt-2">Payment Status</span>
                       <div className="mt-2 flex items-center gap-2">
                         <span>:</span>
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-black uppercase ${
-                          viewInvoice.status === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                        }`}>
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-black uppercase ${viewInvoice.status === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                          }`}>
                           {viewInvoice.status === 'Paid' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertCircle className="w-3.5 h-3.5" />}
                           {viewInvoice.status}
                         </span>
@@ -690,13 +686,13 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
             </div>
 
             <div className="p-6 border-t border-gray-200 bg-gray-50 flex justify-end gap-4 rounded-b-xl shadow-sm z-20">
-              <button 
-                onClick={() => setViewInvoice(null)} 
+              <button
+                onClick={() => setViewInvoice(null)}
                 className="px-6 py-2.5 rounded-lg font-bold text-sm text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors shadow-sm"
               >
                 Close
               </button>
-              <button 
+              <button
                 onClick={() => {
                   const element = document.getElementById('tenant-invoice-print');
                   if (element) {
@@ -709,7 +705,7 @@ function InvoiceHistory({ tenantId, tenant }: { tenantId: number, tenant: any })
                     };
                     html2pdf().set(opt).from(element).save();
                   }
-                }} 
+                }}
                 className="px-6 py-2.5 rounded-lg font-bold text-sm bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center gap-2 shadow-sm"
               >
                 <Printer className="w-4 h-4" /> Download PDF

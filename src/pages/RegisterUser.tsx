@@ -26,7 +26,7 @@ export default function RegisterUser() {
     if (!lastName) errors.lastName = "Last name is required";
     if (!/^[a-zA-Z0-9.\-_]+@gmail\.com$/.test(email)) errors.email = "Email must be a valid Gmail address";
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/.test(password)) errors.password = "Password must include one uppercase, one lowercase, one digit, and one special char";
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -34,7 +34,7 @@ export default function RegisterUser() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setMessage(null);
     setError(null);
     setLoading(true);
@@ -67,17 +67,17 @@ export default function RegisterUser() {
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: any }; message?: string };
       let errorMsg = 'Registration failed. Please try again.';
-      
+
       if (axiosError.response?.data) {
         if (typeof axiosError.response.data === 'object') {
-           if (axiosError.response.data.errors) {
-              setFormErrors(axiosError.response.data.errors);
-              errorMsg = "Please correct the highlighted errors.";
-           } else if (axiosError.response.data.message) {
-              errorMsg = axiosError.response.data.message;
-           }
+          if (axiosError.response.data.errors) {
+            setFormErrors(axiosError.response.data.errors);
+            errorMsg = "Please correct the highlighted errors.";
+          } else if (axiosError.response.data.message) {
+            errorMsg = axiosError.response.data.message;
+          }
         } else if (typeof axiosError.response.data === 'string') {
-           errorMsg = axiosError.response.data;
+          errorMsg = axiosError.response.data;
         }
       } else if (axiosError.message) {
         errorMsg = axiosError.message;
@@ -112,7 +112,7 @@ export default function RegisterUser() {
                 placeholder="e.g. Acme Corp"
                 className={`w-full bg-slate-950/50 border ${formErrors.tenantName ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
                 value={tenantName}
-                onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({...prev, tenantName: ''})) }}
+                onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({ ...prev, tenantName: '' })) }}
               />
               {formErrors.tenantName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.tenantName}</span>}
             </div>
@@ -123,7 +123,7 @@ export default function RegisterUser() {
                 placeholder="e.g. ACM"
                 className={`w-full bg-slate-950/50 border ${formErrors.tenantCode ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
                 value={tenantCode}
-                onChange={(e) => { setTenantCode(e.target.value.toUpperCase()); setFormErrors(prev => ({...prev, tenantCode: ''})) }}
+                onChange={(e) => { setTenantCode(e.target.value.toUpperCase()); setFormErrors(prev => ({ ...prev, tenantCode: '' })) }}
               />
               {formErrors.tenantCode && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.tenantCode}</span>}
             </div>
@@ -138,7 +138,7 @@ export default function RegisterUser() {
                 placeholder="First Name"
                 className={`w-full bg-slate-950/50 border ${formErrors.firstName ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
                 value={firstName}
-                onChange={(e) => { setFirstName(e.target.value); setFormErrors(prev => ({...prev, firstName: ''})) }}
+                onChange={(e) => { setFirstName(e.target.value); setFormErrors(prev => ({ ...prev, firstName: '' })) }}
               />
               {formErrors.firstName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.firstName}</span>}
             </div>
@@ -150,7 +150,7 @@ export default function RegisterUser() {
                 placeholder="Last Name"
                 className={`w-full bg-slate-950/50 border ${formErrors.lastName ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
                 value={lastName}
-                onChange={(e) => { setLastName(e.target.value); setFormErrors(prev => ({...prev, lastName: ''})) }}
+                onChange={(e) => { setLastName(e.target.value); setFormErrors(prev => ({ ...prev, lastName: '' })) }}
               />
               {formErrors.lastName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.lastName}</span>}
             </div>
@@ -164,7 +164,7 @@ export default function RegisterUser() {
               placeholder="admin@gmail.com"
               className={`w-full bg-slate-950/50 border ${formErrors.email ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
               value={email}
-              onChange={(e) => { setEmail(e.target.value); setFormErrors(prev => ({...prev, email: ''})) }}
+              onChange={(e) => { setEmail(e.target.value); setFormErrors(prev => ({ ...prev, email: '' })) }}
             />
             {formErrors.email && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.email}</span>}
           </div>
@@ -177,7 +177,7 @@ export default function RegisterUser() {
               placeholder="Password"
               className={`w-full bg-slate-950/50 border ${formErrors.password ? 'border-rose-500' : 'border-slate-700'} text-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all placeholder:text-slate-600 text-sm`}
               value={password}
-              onChange={(e) => { setPassword(e.target.value); setFormErrors(prev => ({...prev, password: ''})) }}
+              onChange={(e) => { setPassword(e.target.value); setFormErrors(prev => ({ ...prev, password: '' })) }}
             />
             {formErrors.password && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.password}</span>}
           </div>
@@ -200,5 +200,4 @@ export default function RegisterUser() {
     </div>
   );
 }
-
 

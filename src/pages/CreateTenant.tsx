@@ -41,7 +41,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
     if (!/^\d{10}$/.test(phone)) errors.phone = "Phone number must be exactly 10 digits";
     if (!databaseName) errors.databaseName = "Database name is required";
     else if (!/^[A-Za-z0-9_]+$/.test(databaseName)) errors.databaseName = "Database name can only contain letters, digits, or underscore";
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -49,7 +49,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setLoading(true);
 
     const payload = {
@@ -85,16 +85,16 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
       } else if (axiosError.message) {
         errorMsg = axiosError.message;
       }
-      
+
       // Try to parse backend validation errors (Map<String, String>)
       if (axiosError.response && typeof axiosError.response.data === 'object') {
         const data = axiosError.response.data as any;
         if (data.errors) {
-            setFormErrors(data.errors);
-            errorMsg = "Please correct the highlighted errors.";
+          setFormErrors(data.errors);
+          errorMsg = "Please correct the highlighted errors.";
         }
       }
-      
+
       showToast('error', errorMsg);
     } finally {
       setLoading(false);
@@ -106,11 +106,10 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
       {/* Toast Alert */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${
-            toast.type === 'success'
+          className={`fixed top-4 right-4 z-[9999] px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 ${toast.type === 'success'
               ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
               : 'bg-rose-500/10 border-rose-500/20 text-rose-455'
-          }`}
+            }`}
           role="alert"
         >
           {toast.msg}
@@ -156,7 +155,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="e.g. Acme Corporation"
                   className={`w-full bg-background border ${formErrors.tenantName ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={tenantName}
-                  onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({...prev, tenantName: ''})) }}
+                  onChange={(e) => { setTenantName(e.target.value); setFormErrors(prev => ({ ...prev, tenantName: '' })) }}
                 />
                 {formErrors.tenantName && <span className="text-[10px] text-rose-500 block mt-1">{formErrors.tenantName}</span>}
               </div>
@@ -170,7 +169,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="e.g. ACM"
                   className={`w-full bg-background border ${formErrors.tenantCode ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={tenantCode}
-                  onChange={(e) => { setTenantCode(e.target.value.toUpperCase()); setFormErrors(prev => ({...prev, tenantCode: ''})) }}
+                  onChange={(e) => { setTenantCode(e.target.value.toUpperCase()); setFormErrors(prev => ({ ...prev, tenantCode: '' })) }}
                 />
                 {formErrors.tenantCode ? (
                   <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.tenantCode}</span>
@@ -180,7 +179,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   </span>
                 )}
               </div>
-              
+
               <div className="md:col-span-2">
                 <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                   Database Name <span className="text-rose-500">*</span>
@@ -191,7 +190,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="e.g. acme_db"
                   className={`w-full bg-background border ${formErrors.databaseName ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={databaseName}
-                  onChange={(e) => { setDatabaseName(e.target.value); setFormErrors(prev => ({...prev, databaseName: ''})) }}
+                  onChange={(e) => { setDatabaseName(e.target.value); setFormErrors(prev => ({ ...prev, databaseName: '' })) }}
                 />
                 {formErrors.databaseName && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.databaseName}</span>}
               </div>
@@ -205,7 +204,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
             <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-2">
               <UserCheck className="w-4 h-4" /> Tenant Administrator Profile
             </h3>
-            
+
             <div className="bg-amber-500/5 border border-amber-500/10 p-4 rounded-xl text-amber-400/90 text-xs flex gap-3 mb-4">
               <ShieldAlert className="w-5 h-5 flex-shrink-0" />
               <div>
@@ -224,7 +223,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="Rahul"
                   className={`w-full bg-background border ${formErrors.adminFirstName ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={adminFirstName}
-                  onChange={(e) => { setAdminFirstName(e.target.value); setFormErrors(prev => ({...prev, adminFirstName: ''})) }}
+                  onChange={(e) => { setAdminFirstName(e.target.value); setFormErrors(prev => ({ ...prev, adminFirstName: '' })) }}
                 />
                 {formErrors.adminFirstName && <span className="text-[10px] text-rose-500 block mt-1">{formErrors.adminFirstName}</span>}
               </div>
@@ -239,7 +238,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="Sharma"
                   className={`w-full bg-background border ${formErrors.adminLastName ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={adminLastName}
-                  onChange={(e) => { setAdminLastName(e.target.value); setFormErrors(prev => ({...prev, adminLastName: ''})) }}
+                  onChange={(e) => { setAdminLastName(e.target.value); setFormErrors(prev => ({ ...prev, adminLastName: '' })) }}
                 />
                 {formErrors.adminLastName && <span className="text-[10px] text-rose-500 block mt-1">{formErrors.adminLastName}</span>}
               </div>
@@ -254,7 +253,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="admin@acme.com"
                   className={`w-full bg-background border ${formErrors.adminEmail ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={adminEmail}
-                  onChange={(e) => { setAdminEmail(e.target.value); setFormErrors(prev => ({...prev, adminEmail: ''})) }}
+                  onChange={(e) => { setAdminEmail(e.target.value); setFormErrors(prev => ({ ...prev, adminEmail: '' })) }}
                 />
                 {formErrors.adminEmail && <span className="text-[10px] text-rose-500 block mt-1">{formErrors.adminEmail}</span>}
               </div>
@@ -269,7 +268,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="••••••••"
                   className={`w-full bg-background border ${formErrors.adminPassword ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={adminPassword}
-                  onChange={(e) => { setAdminPassword(e.target.value); setFormErrors(prev => ({...prev, adminPassword: ''})) }}
+                  onChange={(e) => { setAdminPassword(e.target.value); setFormErrors(prev => ({ ...prev, adminPassword: '' })) }}
                 />
                 {formErrors.adminPassword && <span className="text-[10px] text-rose-500 block mt-1">{formErrors.adminPassword}</span>}
               </div>
@@ -284,7 +283,7 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
                   placeholder="1234567890"
                   className={`w-full bg-background border ${formErrors.phone ? 'border-rose-500' : 'border-slate-850'} text-slate-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-cyan-500`}
                   value={phone}
-                  onChange={(e) => { setPhone(e.target.value); setFormErrors(prev => ({...prev, phone: ''})) }}
+                  onChange={(e) => { setPhone(e.target.value); setFormErrors(prev => ({ ...prev, phone: '' })) }}
                 />
                 {formErrors.phone && <span className="text-[10px] text-rose-500 block mt-1" aria-live="polite">{formErrors.phone}</span>}
               </div>
@@ -295,5 +294,4 @@ export default function CreateTenant({ onClose, onSuccess }: CreateTenantProps =
     </div>
   );
 }
-
 

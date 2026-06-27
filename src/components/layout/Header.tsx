@@ -24,8 +24,7 @@ import {
 
 import { cn } from '@/lib/utils'
 import { useToast } from '@/context/ToastContext'
-
-
+import { DashboardQuickActionMenu } from '@/components/dashboard/DashboardQuickActionMenu'
 const pathLabels: Record<string, string> = {
   '/': 'Dashboard',
   '/users': 'Users',
@@ -88,9 +87,7 @@ export function Header() {
         <Input placeholder="Search modules, users, leads..." className="pl-9 bg-muted/50" />
       </div>
 
-
-
-
+      <DashboardQuickActionMenu />
 
       <Button variant="ghost" size="icon" className="relative" onClick={toggleTheme}>
         {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
@@ -100,7 +97,7 @@ export function Header() {
         variant="ghost"
         size="icon"
         className="relative"
-        onClick={() => info('Notifications', 'You have 3 unread notifications.')}
+        onClick={() => navigate('/notifications')}
       >
         <Bell className="h-5 w-5" />
         <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
@@ -122,9 +119,8 @@ export function Header() {
             <p className="text-xs font-normal text-muted-foreground">{tenant.userEmail}</p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => navigate('/settings')}>Profile</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate('/settings')}>Preferences</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => info('Billing', 'Billing module coming soon.')}>Billing</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate('/settings/profile')}>Profile</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate('/settings/billing')}>Billing</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-600"

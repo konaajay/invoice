@@ -158,12 +158,12 @@ export function Receipt() {
 
   const logoToUse = config?.companyLogo || company?.logoUrl;
   const nameToUse = config?.invoiceName || company?.companyName || 'COMPANY';
-  
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8 font-sans print:bg-white print:p-0">
       <div className="max-w-4xl mx-auto bg-white text-black shadow-2xl rounded-xl border border-gray-200 overflow-hidden flex flex-col min-h-full print:shadow-none print:border-none print:w-full print:max-w-none">
         <div id="receipt-content" className="p-10 overflow-y-auto flex-1 relative bg-white print:p-6">
-          
+
           {/* WATERMARK */}
           {balanceDue <= 0 && (
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-0 print:opacity-[0.03]">
@@ -189,9 +189,8 @@ export function Receipt() {
                   <span className="font-bold text-gray-500 uppercase mt-2">Status</span>
                   <div className="mt-2 flex items-center gap-2">
                     <span>:</span>
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-black uppercase ${
-                      balanceDue <= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                    }`}>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-black uppercase ${balanceDue <= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                      }`}>
                       {balanceDue <= 0 ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertCircle className="w-3.5 h-3.5" />}
                       {balanceDue <= 0 ? 'PAID' : 'PENDING'}
                     </span>
@@ -339,7 +338,7 @@ export function Receipt() {
                     <span className="font-black uppercase tracking-wider">Total Amount</span>
                     <span className="font-black text-xl text-indigo-700">{fmtINR(totalAmt)}</span>
                   </div>
-                  
+
                   <div className="flex justify-between text-gray-600 pt-3 border-t border-gray-200 mt-3">
                     <span className="font-bold uppercase tracking-wider text-xs">Amount Paid</span>
                     <span className="font-black text-emerald-600">{fmtINR(totalPaid)}</span>

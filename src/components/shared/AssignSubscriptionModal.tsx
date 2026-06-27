@@ -107,7 +107,7 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
             subtotal += Number(config.amount || 0);
             subtotal += Number(config.extraCharges || 0);
         });
-        
+
         let discount = 0;
         if (discountValue) {
             if (discountType === 'PERCENTAGE') {
@@ -120,10 +120,10 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
         const amountAfterDiscount = subtotal - discount;
         const gst = amountAfterDiscount * (gstPercentage / 100);
         const grandTotal = amountAfterDiscount + gst;
-        const calculatedInstallment = paymentType === 'INSTALLMENT' && noOfInstallments > 0 
-            ? grandTotal / noOfInstallments 
+        const calculatedInstallment = paymentType === 'INSTALLMENT' && noOfInstallments > 0
+            ? grandTotal / noOfInstallments
             : grandTotal;
-            
+
         return { subtotal, discount, amountAfterDiscount, gst, grandTotal, calculatedInstallment };
     };
 
@@ -210,74 +210,74 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                         {Object.keys(modulePricing).map((mod) => {
                             const isCore = mod === 'ADMIN' || mod === 'EMPLOYEE' || mod === 'SETTINGS';
                             return (
-                            <div key={mod} className={`bg-white border ${toggledModules.has(mod) || isCore ? 'border-cyan-200 shadow-sm' : 'border-gray-200'} rounded-xl p-5 transition-all duration-200`}>
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h4 className="text-base font-bold text-gray-900">{formatModuleName(mod)} Module {isCore && <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Core Function</span>}</h4>
-                                        <p className="text-xs text-gray-500 mt-1">Core capabilities and feature access for the {formatModuleName(mod)} module.</p>
+                                <div key={mod} className={`bg-white border ${toggledModules.has(mod) || isCore ? 'border-cyan-200 shadow-sm' : 'border-gray-200'} rounded-xl p-5 transition-all duration-200`}>
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <h4 className="text-base font-bold text-gray-900">{formatModuleName(mod)} Module {isCore && <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Core Function</span>}</h4>
+                                            <p className="text-xs text-gray-500 mt-1">Core capabilities and feature access for the {formatModuleName(mod)} module.</p>
+                                        </div>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" className="sr-only peer" checked={isCore ? true : toggledModules.has(mod)} disabled={isCore} onChange={() => handleToggle(mod)} />
+                                            <div className={`w-11 h-6 rounded-full peer after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all ${isCore ? 'bg-cyan-400 after:translate-x-full after:border-white' : 'bg-gray-200 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:bg-cyan-600'}`}></div>
+                                        </label>
                                     </div>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" checked={isCore ? true : toggledModules.has(mod)} disabled={isCore} onChange={() => handleToggle(mod)} />
-                                        <div className={`w-11 h-6 rounded-full peer after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all ${isCore ? 'bg-cyan-400 after:translate-x-full after:border-white' : 'bg-gray-200 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:bg-cyan-600'}`}></div>
-                                    </label>
+
+                                    {/* Expanded Inputs */}
+                                    {toggledModules.has(mod) && moduleConfigs[mod] && (
+                                        <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-700 mb-1">Subscription Price</label>
+                                                <input
+                                                    type="number"
+                                                    value={moduleConfigs[mod].amount}
+                                                    onChange={e => handleConfigChange(mod, 'amount', e.target.value)}
+                                                    className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
+                                                    placeholder="e.g. 150"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-700 mb-1">Special Requirements</label>
+                                                <input
+                                                    type="text"
+                                                    value={moduleConfigs[mod].specialRequirements}
+                                                    onChange={e => handleConfigChange(mod, 'specialRequirements', e.target.value)}
+                                                    className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
+                                                    placeholder="e.g. Specific branch code"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-700 mb-1">Extra Charges</label>
+                                                <input
+                                                    type="number"
+                                                    value={moduleConfigs[mod].extraCharges}
+                                                    onChange={e => handleConfigChange(mod, 'extraCharges', e.target.value)}
+                                                    className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
+                                                    placeholder="e.g. 50"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
+                                                <input
+                                                    type="date"
+                                                    value={moduleConfigs[mod].startDate}
+                                                    onChange={e => handleConfigChange(mod, 'startDate', e.target.value)}
+                                                    className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-700 mb-1">Expiry Date</label>
+                                                <input
+                                                    type="date"
+                                                    value={moduleConfigs[mod].expiryDate}
+                                                    onChange={e => handleConfigChange(mod, 'expiryDate', e.target.value)}
+                                                    className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
+                                                />
+                                            </div>
+                                            {/* Module permissions are implicitly granted when module is selected, UI removed per user request */}
+                                        </div>
+                                    )}
                                 </div>
-
-                                {/* Expanded Inputs */}
-                                {toggledModules.has(mod) && moduleConfigs[mod] && (
-                                    <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Subscription Price</label>
-                                            <input
-                                                type="number"
-                                                value={moduleConfigs[mod].amount}
-                                                onChange={e => handleConfigChange(mod, 'amount', e.target.value)}
-                                                className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
-                                                placeholder="e.g. 150"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Special Requirements</label>
-                                            <input
-                                                type="text"
-                                                value={moduleConfigs[mod].specialRequirements}
-                                                onChange={e => handleConfigChange(mod, 'specialRequirements', e.target.value)}
-                                                className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
-                                                placeholder="e.g. Specific branch code"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Extra Charges</label>
-                                            <input
-                                                type="number"
-                                                value={moduleConfigs[mod].extraCharges}
-                                                onChange={e => handleConfigChange(mod, 'extraCharges', e.target.value)}
-                                                className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
-                                                placeholder="e.g. 50"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
-                                            <input
-                                                type="date"
-                                                value={moduleConfigs[mod].startDate}
-                                                onChange={e => handleConfigChange(mod, 'startDate', e.target.value)}
-                                                className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Expiry Date</label>
-                                            <input
-                                                type="date"
-                                                value={moduleConfigs[mod].expiryDate}
-                                                onChange={e => handleConfigChange(mod, 'expiryDate', e.target.value)}
-                                                className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
-                                            />
-                                        </div>
-                                        {/* Module permissions are implicitly granted when module is selected, UI removed per user request */}
-                                    </div>
-                                )}
-                            </div>
                             );
                         })}
                     </div>
@@ -288,8 +288,8 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-xs font-medium text-gray-700 mb-1">Invoice Type</label>
-                                <select 
-                                    value={invoiceType} 
+                                <select
+                                    value={invoiceType}
                                     onChange={e => setInvoiceType(e.target.value)}
                                     className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                 >
@@ -300,8 +300,8 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-gray-700 mb-1">Payment Plan</label>
-                                <select 
-                                    value={paymentType} 
+                                <select
+                                    value={paymentType}
                                     onChange={e => setPaymentType(e.target.value)}
                                     className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                 >
@@ -311,11 +311,11 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                             </div>
                             <div>
                                 <label className="block text-xs font-medium text-gray-700 mb-1">GST Percentage (%)</label>
-                                <input 
-                                    type="number" 
+                                <input
+                                    type="number"
                                     min="0"
                                     max="100"
-                                    value={gstPercentage} 
+                                    value={gstPercentage}
                                     onChange={e => setGstPercentage(Number(e.target.value))}
                                     className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                 />
@@ -323,8 +323,8 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                             <div className="flex gap-2">
                                 <div className="w-1/3">
                                     <label className="block text-xs font-medium text-gray-700 mb-1">Discount Type</label>
-                                    <select 
-                                        value={discountType} 
+                                    <select
+                                        value={discountType}
                                         onChange={e => setDiscountType(e.target.value)}
                                         className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                     >
@@ -334,34 +334,34 @@ export const AssignSubscriptionModal: React.FC<AssignSubscriptionModalProps> = (
                                 </div>
                                 <div className="w-2/3">
                                     <label className="block text-xs font-medium text-gray-700 mb-1">Discount Value</label>
-                                    <input 
-                                        type="number" 
+                                    <input
+                                        type="number"
                                         min="0"
-                                        value={discountValue} 
+                                        value={discountValue}
                                         onChange={e => setDiscountValue(e.target.value ? Number(e.target.value) : '')}
                                         className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                         placeholder="0"
                                     />
                                 </div>
                             </div>
-                            
+
                             {paymentType === 'INSTALLMENT' && (
                                 <>
                                     <div>
                                         <label className="block text-xs font-medium text-gray-700 mb-1">Number of Installments</label>
-                                        <input 
-                                            type="number" 
+                                        <input
+                                            type="number"
                                             min="2"
-                                            value={noOfInstallments} 
+                                            value={noOfInstallments}
                                             onChange={e => setNoOfInstallments(parseInt(e.target.value) || 2)}
                                             className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-medium text-gray-700 mb-1">Installment Amount (Optional override)</label>
-                                        <input 
-                                            type="number" 
-                                            value={installmentAmount} 
+                                        <input
+                                            type="number"
+                                            value={installmentAmount}
                                             onChange={e => setInstallmentAmount(e.target.value ? Number(e.target.value) : '')}
                                             className="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 px-3 py-2 border"
                                             placeholder={`Auto-calculated: ₹${financials.calculatedInstallment.toFixed(2)}`}
